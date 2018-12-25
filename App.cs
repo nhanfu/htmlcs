@@ -10,7 +10,7 @@ namespace MVVM
             var vm = new PeopleViewModel();
             PeopleViewModel.Focus.Subscribe(arg =>
             {
-                Document.GetElementById(arg.NewDataTType)?.Focus();
+                Document.GetElementById(arg.NewData)?.Focus();
             });
 
             var html = new Html(Document.Body);

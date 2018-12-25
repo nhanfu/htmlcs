@@ -21,7 +21,7 @@ namespace MVVM
 
         public void Subscribe(Action<ObservableArrayArgs<T>> subscriber)
         {
-            var action = subscriber as Action<ObservableArgs>;
+            var action = subscriber.As<Action<object>>();
             if (!_subscribers.Contains(action))
             {
                 _subscribers.Add(action);
@@ -30,7 +30,7 @@ namespace MVVM
 
         protected override void Notify()
         {
-            NotifyChange(new ObservableArrayArgs<T>
+            NotifyArrayChanged(new ObservableArrayArgs<T>
             {
                 Array = Data,
                 Item = default(T),
@@ -39,7 +39,7 @@ namespace MVVM
             });
         }
 
-        private void NotifyChange(ObservableArrayArgs<T> arg)
+        private void NotifyArrayChanged(ObservableArrayArgs<T> arg)
         {
             var isBeingExecuted = _exeStack.Contains(this);
             if (isBeingExecuted)
@@ -59,7 +59,7 @@ namespace MVVM
             var array = Data;
             var position = index ?? array.Length;
             array.Splice(position, 0, item);
-            NotifyChange(new ObservableArrayArgs<T>
+            NotifyArrayChanged(new ObservableArrayArgs<T>
             {
                 Array = array,
                 Item = item,
@@ -85,7 +85,7 @@ namespace MVVM
             var array = Data;
             var item = array[index];
             array.Splice(index, 1);
-            NotifyChange(new ObservableArrayArgs<T>
+            NotifyArrayChanged(new ObservableArrayArgs<T>
             {
                 Array = array,
                 Item = item,
@@ -98,7 +98,7 @@ namespace MVVM
         {
             var array = Data;
             array[index] = item;
-            NotifyChange(new ObservableArrayArgs<T>
+            NotifyArrayChanged(new ObservableArrayArgs<T>
             {
                 Array = array,
                 Item = item,

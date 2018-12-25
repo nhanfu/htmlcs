@@ -11,7 +11,7 @@ namespace MVVM
         protected readonly Func<object> _computedFn;
         protected object _oldValue { get; set; }
         protected object _newValue { get; set; }
-        protected readonly List<Action<ObservableArgs>> _subscribers = new List<Action<ObservableArgs>>();
+        protected readonly List<Action<object>> _subscribers = new List<Action<object>>();
         protected readonly List<Observable> _dependencies = new List<Observable>();
         private int? delayTime = null;
         private int animationFrameId = -1;
@@ -67,7 +67,7 @@ namespace MVVM
 
         public virtual void Subscribe(Action<ObservableArgs> subscriber)
         {
-            _subscribers.Add(subscriber);
+            _subscribers.Add(subscriber.As<Action<object>>());
         }
 
         public void SetDependency(Observable dependency)
@@ -115,15 +115,9 @@ namespace MVVM
             delayTime = delay;
         }
 
-        public static Observable<T> Of<T>(T value)
-        {
-            return new Observable<T>(value);
-        }
+        public static Observable<T> Of<T>(T value) => new Observable<T>(value);
 
-        public static Observable<T> Of<T>(Func<T> value)
-        {
-            return new Observable<T>(value);
-        }
+        public static Observable<T> Of<T>(Func<T> value) => new Observable<T>(value);
 
         public static ObservableArray<T> Of<T>(T[] value) => new ObservableArray<T>(value);
     }
@@ -148,7 +142,7 @@ namespace MVVM
 
         public virtual void Subscribe(Action<ObservableArgs<T>> subscriber)
         {
-            var action = subscriber as Action<ObservableArgs>;
+            var action = subscriber as Action<object>;
             _subscribers.Add(action);
         }
 
@@ -162,10 +156,8 @@ namespace MVVM
             _subscribers.ForEach((subscriber) => {
                 subscriber(new ObservableArgs<T>
                 {
-                    NewDataTType = newData,
-                    OldDataTType = (T)_oldValue,
                     NewData = newData,
-                    OldData = _oldValue
+                    OldData = (T)_oldValue
                 });
             });
             _dependencies.ForEach((dpc) => {

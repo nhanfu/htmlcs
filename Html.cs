@@ -220,7 +220,7 @@ namespace MVVM
             var text = new Text(val.Data);
             val.Subscribe(arg =>
             {
-                text.TextContent = arg.NewDataTType;
+                text.TextContent = arg.NewData;
             });
             Context.AppendChild(text);
             return this;
@@ -361,7 +361,7 @@ namespace MVVM
             ele.Style.Display = visible.Data ? "" : Display.None.ToString();
             visible.Subscribe(arg =>
             {
-                ele.Style.Display = arg.NewDataTType ? "" : Display.None.ToString();
+                ele.Style.Display = arg.NewData ? "" : Display.None.ToString();
             });
             return this;
         }
@@ -372,7 +372,7 @@ namespace MVVM
             ele.Style.Display = hidden.Data ? Display.None.ToString(): string.Empty;
             hidden.Subscribe(arg =>
             {
-                ele.Style.Display = arg.NewDataTType ? Display.None.ToString() : string.Empty;
+                ele.Style.Display = arg.NewData ? Display.None.ToString() : string.Empty;
             });
             return this;
         }

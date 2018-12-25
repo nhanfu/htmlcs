@@ -10,14 +10,13 @@ namespace MVVM
         public object OldData { get; internal set; }
     }
 
-    [IgnoreGeneric]
-    public class ObservableArgs<T> : ObservableArgs
+    public class ObservableArgs<T>
     {
-        public T NewDataTType { get; internal set; }
-        public T OldDataTType { get; internal set; }
+        public T NewData { get; internal set; }
+        public T OldData { get; internal set; }
     }
 
-    public class ObservableArrayArgs<T> : ObservableArgs
+    public class ObservableArrayArgs<T>
     {
         public T[] Array { get; set; }
         public T Item { get; set; }
